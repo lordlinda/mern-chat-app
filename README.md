@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Hello, My Friends  
 Thank you for having interest in this repository ! 
 
@@ -16,3 +17,6 @@ You can watch the tutorial for this app.
 https://www.youtube.com/channel/UCFyXA9x8lpL3EYWeYhj4C4Q?view_as=subscriber
 
 
+=======
+# mern-chat-app
+>>>>>>> f8ecf1892b9f65aaef8097da0ac96cdd7da52da6

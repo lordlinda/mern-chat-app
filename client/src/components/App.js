@@ -25,7 +25,6 @@ function App() {
           <Route exact path="/chat" component={Auth(ChatPage, null)} />
         </Switch>
       </div>
-      <Footer />
     </Suspense>
   );
 }

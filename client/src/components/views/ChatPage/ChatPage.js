@@ -22,16 +22,17 @@ function ChatPage(props) {
   };
   const socket = io(server, connectionOptions);
   useEffect(() => {
-    props.getChats();
-    socket.on("Output Chat Message", (messageFromBackEnd) => {
-      console.log(messageFromBackEnd);
-      props.postMessage(messageFromBackEnd);
-    });
     var element = document.getElementById("scrollElement");
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
+
+    props.getChats();
+
+    socket.on("Output Chat Message", (messageFromBackEnd) => {
+      element.scrollIntoView({
+        block: "end",
+        behavior: "smooth",
+      });
+
+      props.postMessage(messageFromBackEnd);
     });
   }, []);
 
@@ -94,7 +95,7 @@ function ChatPage(props) {
     props.chats &&
     props.chats.map((chat) => <ChatCard key={chat._id} {...chat} />);
   return (
-    <div>
+    <div className="chatPage">
       <React.Fragment>
         <div>
           <p style={{ fontSize: "2rem", textAlign: "center" }}>
@@ -104,41 +105,40 @@ function ChatPage(props) {
         </div>
 
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <div className="infinite-container">
+          <div
+            className="infinite-container"
+            id="messages"
+            style={{ padding: "20px", overflowY: "scroll" }}
+          >
             {props.chats && <div>{renderCards()}</div>}
-            <div id="scrollElement" style={{ float: "left", clear: "both" }} />
           </div>
-
-          <Row>
+          <div id="scrollElement" style={{ float: "left", clear: "both" }} />
+          <Row style={{ position: "fixed", bottom: "0", width: "100%" }}>
             <Form layout="inline" onSubmit={submitChatMessage}>
-              <Col span={18}>
+              <Col span={2}>
+                <Dropzone onDrop={onDrop}>
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <Button>
+                        <Icon type="upload" />
+                      </Button>
+                    </div>
+                  )}
+                </Dropzone>
+              </Col>
+              <Col span={19}>
                 <Input
                   id="message"
-                  prefix={
-                    <Icon type="message" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
+                  prefix={<Icon type="chat" />}
                   placeholder="Let's start talking"
                   type="text"
                   value={chatMessage}
                   onChange={handleSearchChange}
                 />
               </Col>
-              <Col span={2}>
-                <Dropzone onDrop={onDrop}>
-                  {({ getRootProps, getInputProps }) => (
-                    <section>
-                      <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        <Button>
-                          <Icon type="upload" />
-                        </Button>
-                      </div>
-                    </section>
-                  )}
-                </Dropzone>
-              </Col>
 
-              <Col span={4}>
+              <Col span={3}>
                 <Button
                   type="primary"
                   style={{ width: "100%" }}

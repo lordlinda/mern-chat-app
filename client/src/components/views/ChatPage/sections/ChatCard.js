@@ -36,7 +36,7 @@ function ChatCard(props) {
         }
         datetime={
           <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
-            <span>{moment().fromNow()}</span>
+            <span>{moment(props?.createdAt).fromNow()}</span>
           </Tooltip>
         }
       />

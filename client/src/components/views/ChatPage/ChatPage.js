@@ -67,7 +67,11 @@ function ChatPage(props) {
     formData.append("file", files[0]);
 
     axios
-      .post("http://localhost:5000/api/chat/uploadfiles", formData, config)
+      .post(
+        `${process.env.REACT_APP_URL}/api/chat/uploadfiles`,
+        formData,
+        config
+      )
       .then((response) => {
         if (response.data.success) {
           console.log("sucess");

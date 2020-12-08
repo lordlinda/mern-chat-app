@@ -10,8 +10,8 @@ import ChatCard from "./sections/ChatCard";
 import axios from "axios";
 function ChatPage(props) {
   const [chatMessage, setChatMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   let server = `${process.env.REACT_APP_URL}`;
-
   //!this connectOptions is what prevents the cors errors so dont ever delete it
 
   var connectionOptions = {
@@ -23,7 +23,6 @@ function ChatPage(props) {
   const socket = io(server, connectionOptions);
   useEffect(() => {
     var element = document.getElementById("scrollElement");
-    var messages = document.getElementById("messages");
 
     props.getChats();
 
@@ -42,8 +41,12 @@ function ChatPage(props) {
   };
 
   const submitChatMessage = (e) => {
-    e.preventDefault();
+    if (props.user.userData && !props.user.userData.isAuth) {
+      return alert("Please Log in first");
+    }
 
+    e.preventDefault();
+    setLoading(true);
     socket.emit("Input Chat Message", {
       chatMessage,
       userId: props.user.userData._id,
@@ -52,9 +55,11 @@ function ChatPage(props) {
       nowTime: moment(),
       type: "Text",
     });
+    setLoading(false);
     setChatMessage("");
   };
   const onDrop = (files) => {
+    setLoading(true);
     console.log(files);
     if (props.user.userData && !props.user.userData.isAuth) {
       return alert("Please Log in first");
@@ -85,6 +90,7 @@ function ChatPage(props) {
             nowTime: moment(),
             type: "VideoOrImage",
           });
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -111,9 +117,8 @@ function ChatPage(props) {
             id="messages"
             style={{ padding: "20px", overflowY: "scroll" }}
           >
-            {props.chats && (
-              <div style={{ scrollMarginBottom: "20px" }}>{renderCards()}</div>
-            )}
+            {props.chats && <div>{renderCards()}</div>}
+
             <div
               id="scrollElement"
               style={{
@@ -122,6 +127,7 @@ function ChatPage(props) {
                 padding: "40px",
               }}
             ></div>
+            {loading && <div>loading post...</div>}
           </div>
 
           <Row style={{ position: "fixed", bottom: "0", width: "100%" }}>

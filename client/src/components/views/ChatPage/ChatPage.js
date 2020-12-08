@@ -10,7 +10,7 @@ import ChatCard from "./sections/ChatCard";
 import axios from "axios";
 function ChatPage(props) {
   const [chatMessage, setChatMessage] = useState("");
-  let server = "http://localhost:5000";
+  let server = `${process.env.REACT_APP_URL}`;
 
   //!this connectOptions is what prevents the cors errors so dont ever delete it
 

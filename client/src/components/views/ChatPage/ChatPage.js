@@ -70,7 +70,7 @@ function ChatPage(props) {
 
     axios
       .post(
-        `${process.env.REACT_APP_URL}/api/chat/uploadfiles`,
+        `${process.env.REACT_APP_URL}api/chat/uploadfiles`,
         formData,
         config
       )
